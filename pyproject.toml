@@ -3,7 +3,7 @@ name = "esb-smart-meter-importer"
 dynamic = ["version"]
 description = ''
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 license = "MIT"
 keywords = []
 authors = [
@@ -12,7 +12,6 @@ authors = [
 classifiers = [
   "Development Status :: 4 - Beta",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.7",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
@@ -30,7 +29,7 @@ readme = "README.md"
 packages = [{include = "esb_smart_meter_importer", from = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8"
 requests = "^2.31.0"
 beautifulsoup4 = "^4.12.2"
 
@@ -40,9 +39,8 @@ requests-mock = "^1.11.0"
 pytest-cov = "^4.1.0"
 
 [tool.poetry.group.lint.dependencies]
-black = "^23.11.0"
-mypy = "^1.7.0"
 ruff = "^0.1.5"
+black = "^23.11.0"
 
 [build-system]
 requires = ["poetry-core"]
