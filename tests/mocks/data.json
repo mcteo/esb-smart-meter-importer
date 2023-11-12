@@ -1,0 +1,12 @@
+{
+  "minimumDate": "2023-07-21T00:00:00",
+  "maximumDate": "2023-11-09T17:30:00",
+  "onlyExport": false,
+  "exportAndImport": false,
+  "imports": [
+    { "x": "2023-07-21T00:00:00", "y": 0.371, "name": "21-Jul-23 at 00:00" },
+    { "x": "2023-07-21T00:30:00", "y": 0.426, "name": "21-Jul-23 at 00:30" },
+    { "x": "2023-07-21T01:00:00", "y": 0.381, "name": "21-Jul-23 at 01:00" }
+  ],
+  "exports": []
+}
