@@ -22,7 +22,7 @@ classifiers = [
 
 [tool.poetry]
 name = "esb-smart-meter-importer"
-version = "0.1.0"
+version = "0.2.0"
 description = "A small utility to extract power comsumption data from Ireland's national electrical grid provider."
 authors = ["Thomas Dunne <thomasdunne999@gmail.com>"]
 readme = "README.md"
