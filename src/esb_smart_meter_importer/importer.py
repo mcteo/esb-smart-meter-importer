@@ -5,6 +5,8 @@ from typing import Dict, Tuple
 from bs4 import BeautifulSoup
 from requests import Session
 
+from esb_smart_meter_importer.exceptions import LoginError
+
 
 def get_app_settings(sess: Session) -> Tuple[str, str]:
     """
@@ -45,6 +47,12 @@ def login(sess: Session, username: str, password: str, csrf_token: str, transact
         },
     )
     initial_login_req.raise_for_status()
+
+    initial_login_response = initial_login_req.json()
+    if initial_login_response.get("status") != "200":
+        default_error_message = "Unknown error occurred when logging in"
+        error_message = initial_login_response.get("message", default_error_message)
+        raise LoginError(error_message)
 
     form_tokens_req = sess.get(
         "https://login.esbnetworks.ie/esbntwkscustportalprdb2c01.onmicrosoft.com"

@@ -1,35 +1,11 @@
-import json
-import re
-
 import pytest
 from requests import Session
-import requests_mock
 
 from esb_smart_meter_importer import importer
+from esb_smart_meter_importer.exceptions import LoginError
 
 
-@pytest.fixture(autouse=True)
-def mock_requests():
-    with requests_mock.Mocker() as mock:
-        with open("tests/mocks/homepage.html") as fin:
-            mock.get("https://myaccount.esbnetworks.ie", text=fin.read())
-
-        with open("tests/mocks/initial_login_response.json") as fin:
-            mock.post(re.compile(".+/SelfAsserted"), json=json.loads(fin.read()))
-
-        with open("tests/mocks/form_tokens.html") as fin:
-            mock.get(re.compile(".+/confirmed"), text=fin.read())
-
-        with open("tests/mocks/usage_page.html") as fin:
-            mock.post("https://myaccount.esbnetworks.ie/signin-oidc", text=fin.read())
-
-        with open("tests/mocks/data.json") as fin:
-            mock.get("https://myaccount.esbnetworks.ie/datahub/GetHdfContent", json=json.loads(fin.read()))
-
-        yield
-
-
-def test_get_app_settings():
+def test_get_app_settings(mock_valid_requests):
     sess = Session()
 
     csrf, transaction_id = importer.get_app_settings(sess)
@@ -38,13 +14,13 @@ def test_get_app_settings():
     assert transaction_id == "StateProperties=XXX"
 
 
-def test_login():
+def test_login(mock_valid_requests):
     sess = Session()
 
     importer.login(sess, "username", "password", "csrf", "tx")
 
 
-def test_fetch_data():
+def test_fetch_data(mock_valid_requests):
     sess = Session()
 
     imports, exports = importer.fetch_data(sess, "100xxx", "2023-01-01")
@@ -53,8 +29,15 @@ def test_fetch_data():
     assert len(exports.items()) == 0
 
 
-def test_smart_meter_usage():
+def test_smart_meter_usage(mock_valid_requests):
     imports, exports = importer.smart_meter_usage("username", "password", "100xxx", "2023-01-01")
 
     assert len(imports.items()) == 3
     assert len(exports.items()) == 0
+
+
+def test_invalid_login(mock_login_failed_requests):
+    sess = Session()
+
+    with pytest.raises(LoginError):
+        importer.login(sess, "username", "password", "csrf", "tx")
